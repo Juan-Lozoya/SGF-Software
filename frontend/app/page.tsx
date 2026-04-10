@@ -1,65 +1,130 @@
-import Image from 'next/image';
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+import { User, ShieldCheck, BookOpenText, Eye, EyeOff } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { useRouter } from 'next/navigation';
+import { Data } from '@/types/page';
+
+export default function LoginPage() {
+  const router = useRouter();
+
+  const [data, setData] = useState<Data>({
+    role: 'cliente',
+    username: '',
+    password: '',
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const loginRoles = [
+    { key: 'cliente', label: 'Cliente', icon: User },
+    { key: 'admin', label: 'Admin', icon: ShieldCheck },
+  ];
+
+  const handleSubmit = () => {
+    router.push('/dashboard');
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{' '}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{' '}
-            or the{' '}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{' '}
-            center.
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-6 font-sans text-foreground">
+      <div className="mb-12 flex flex-col items-center gap-4">
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg">
+          <BookOpenText size={36} strokeWidth={1.5} />
+        </div>
+        <div className="text-center">
+          <h1 className="text-5xl font-bold tracking-tight">SGF</h1>
+          <p className="text-lg font-medium text-muted-foreground mt-2">
+            Sistema de Gestión de Facturación
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </div>
+
+      <Card className="w-full max-w-[480px] border-none bg-card shadow-2xl rounded-[2rem]">
+        <CardHeader className="pt-12 pb-6 text-center">
+          <CardTitle className="text-2xl font-semibold text-foreground">Iniciar Sesión</CardTitle>
+          <CardDescription className="text-base font-medium mt-2">
+            Selecciona tu cuenta e ingresa tus credenciales
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="space-y-8 px-12 pb-14 pt-2">
+          <div className="grid grid-cols-2 gap-5">
+            {loginRoles.map((item) => (
+              <Button
+                key={item.key}
+                type="button"
+                variant={data.role === item.key ? 'default' : 'outline'}
+                onClick={() => setData({ ...data, role: item.key as 'cliente' | 'admin' })}
+                className={`h-auto flex-col gap-4 rounded-2xl border-[1.5px] p-7 transition-all duration-300 cursor-pointer ${
+                  data.role === item.key
+                    ? 'border-primary bg-primary/10 text-primary hover:bg-primary/20'
+                    : 'border-border text-muted-foreground hover:bg-muted/50'
+                }`}
+              >
+                <div
+                  className={`p-3 rounded-xl ${data.role === item.key ? 'bg-primary/20' : 'bg-muted'}`}
+                >
+                  <item.icon size={28} />
+                </div>
+                <span className="text-base font-bold tracking-tight">{item.label}</span>
+              </Button>
+            ))}
+          </div>
+
+          <div className="space-y-6 pt-2">
+            <div className="space-y-3">
+              <label className="text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider">
+                Usuario
+              </label>
+              <Input
+                type="username"
+                value={data.username}
+                onChange={(e) => setData({ ...data, username: e.target.value })}
+                placeholder="Ingresa tu usuario"
+                className="bg-muted/30 border-border h-14 rounded-2xl text-base px-5 focus-visible:ring-primary"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider">
+                Contraseña
+              </label>
+              <div className="relative">
+                <Input
+                  type={showPassword ? 'text' : 'password'}
+                  value={data.password}
+                  onChange={(e) => setData({ ...data, password: e.target.value })}
+                  placeholder="Ingresa tu contraseña"
+                  className="bg-muted/30 border-border h-14 rounded-2xl text-base px-5 pr-12 focus-visible:ring-primary"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 text-muted-foreground hover:bg-transparent"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </Button>
+              </div>
+            </div>
+
+            <Button
+              className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground text-lg font-bold rounded-2xl shadow-lg mt-6 cursor-pointer transition-all duration-300"
+              onClick={handleSubmit}
+            >
+              Ingresar como {data.role === 'cliente' ? 'cliente' : 'administrador'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <p className="mt-12 text-sm font-medium text-muted-foreground">
+        &copy; 2026 SGF - Todos los derechos reservados
+      </p>
     </div>
   );
 }
