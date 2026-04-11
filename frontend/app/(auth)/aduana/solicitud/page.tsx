@@ -8,12 +8,23 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 import { FieldGroup, FieldSet, Field, FieldLabel } from '@/components/ui/field';
 
 import { Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+
 import { FileText, Upload } from 'lucide-react';
 
 export default function SolicitudPage() {
@@ -47,12 +58,34 @@ export default function SolicitudPage() {
 
             <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
               <Field>
-                <FieldLabel htmlFor="monto">Monto*</FieldLabel>
-                <Input id="monto" placeholder="0.00" required />
+                <FieldLabel htmlFor="codigo-postal">Código Postal</FieldLabel>
+                <Input id="codigo-postal" placeholder="220301" required />
               </Field>
               <Field>
                 <FieldLabel htmlFor="cfdi">Uso de CFDI</FieldLabel>
                 <Input id="cfdi" placeholder="G-03 - Gastos en general" />
+              </Field>
+            </div>
+
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+              <Field>
+                <FieldLabel htmlFor="tipo-pago">Tipo de Pago</FieldLabel>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona Tipo de pago" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Tipos de pagos</SelectLabel>
+                      <SelectItem value="parcialidades">Parcialidades</SelectItem>
+                      <SelectItem value="parcialidades">Una sola exhibicion</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="monto">Monto*</FieldLabel>
+                <Input id="monto" placeholder="0.00" required />
               </Field>
             </div>
 
@@ -77,7 +110,7 @@ export default function SolicitudPage() {
                     <Upload className="w-6 h-6 text-muted-foreground" />
 
                     <span className="text-sm text-muted-foreground">
-                      Haz clic para subir archivos
+                      Haz clic para subir archivos PDF
                     </span>
 
                     <span className="text-xs text-muted-foreground">o arrastra y suelta aquí</span>
