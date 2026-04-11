@@ -1,7 +1,12 @@
+import TitleComponent from '../components/TitleComponent';
+
 export default function ComprobantesPage() {
   return (
     <>
-      <h1>Hola comprobantes</h1>
+      <TitleComponent
+        title="Carga de Comprobantes"
+        subtitle="Sube el comprobante de tu transferencia o pago"
+      />
     </>
   );
 }

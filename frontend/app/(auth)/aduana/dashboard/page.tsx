@@ -1,7 +1,9 @@
+import TitleComponent from '../components/TitleComponent';
+
 export default function DashboardAduana() {
   return (
     <>
-      <h1>hola dasboard aduana</h1>
+      <TitleComponent title="Dashboard" subtitle="Resumen de tu actividad de facturación" />
     </>
   );
 }
